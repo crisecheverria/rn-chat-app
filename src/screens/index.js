@@ -1,8 +1,12 @@
 import React from 'react';
 import {View} from 'react-native';
+import {globalStyles} from '../global-styles';
 import {createStackNavigator} from '@react-navigation/stack';
 import {CometChat} from '@cometchat-pro/react-native-chat';
-import {CometChatUI} from '../../cometchat-pro-react-native-ui-kit/src/index';
+import {
+  CometChatUI,
+  CometChatMessages,
+} from '../../cometchat-pro-react-native-ui-kit/src/index';
 
 import SignIn from './Login';
 import SignUp from './SignUp';
@@ -12,14 +16,18 @@ import {useAuth} from '../context/AuthContext';
 const Stack = createStackNavigator();
 
 const CometChatUIView = () => (
-  <View style={{flex: 1}}>
+  <View style={globalStyles.container}>
     <CometChatUI />
   </View>
 );
 
 const CometChatUIScreens = () => (
-  <Stack.Navigator>
+  <Stack.Navigator
+    screenOptions={{
+      headerShown: false,
+    }}>
     <Stack.Screen name="CometChatUIView" component={CometChatUIView} />
+    <Stack.Screen name="CometChatMessages" component={CometChatMessages} />
   </Stack.Navigator>
 );
 
