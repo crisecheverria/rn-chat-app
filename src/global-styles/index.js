@@ -3,10 +3,9 @@ import {StyleSheet, Dimensions} from 'react-native';
 const {height} = Dimensions.get('screen');
 const heightLogo = height * 0.18;
 
-export const styles = StyleSheet.create({
+export const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   header: {
     flex: 2,
@@ -21,6 +20,11 @@ export const styles = StyleSheet.create({
   logo: {
     width: heightLogo,
     height: heightLogo,
+  },
+  title: {
+    color: '#000',
+    fontWeight: 'bold',
+    fontSize: 30,
   },
   mt10: {
     marginTop: 10,

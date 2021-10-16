@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Image} from 'react-native';
 import {Input, Button} from 'react-native-elements';
 import {useAuth} from '../../context/AuthContext';
-import {styles} from './styles';
+import {globalStyles} from '../../global-styles';
 import {CometChat} from '@cometchat-pro/react-native-chat';
 import {COMETCHAT_CONSTANTS} from '../../../constants';
 import gravatar from 'gravatar-api';
@@ -55,15 +55,15 @@ export default function SignUp() {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <View style={globalStyles.container}>
+      <View style={globalStyles.header}>
         <Image
           source={require('../../assets/logo.png')}
-          style={styles.logo}
+          style={globalStyles.logo}
           resizeMode="stretch"
         />
       </View>
-      <View style={styles.body}>
+      <View style={globalStyles.body}>
         <Input
           placeholder="username"
           leftIcon={{type: 'font-awesome', name: 'user'}}
