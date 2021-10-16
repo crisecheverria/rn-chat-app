@@ -42,7 +42,7 @@
     "rn-nodeify": "^10.3.0"
   },
   "dependencies": {
-    "@cometchat-pro/react-native-calls": "^2.0.3-beta1",
+    "@cometchat-pro/react-native-calls": "^2.1.1",
     "@cometchat-pro/react-native-chat": "^3.0.0",
     "@react-native-async-storage/async-storage": "^1.15.9",
     "@react-native-picker/picker": "^1.9.4",

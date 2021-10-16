@@ -1,7 +1,7 @@
 PODS:
   - boost (1.76.0)
   - CocoaAsyncSocket (7.6.5)
-  - CometChatCalls (2.0.3)
+  - CometChatCalls (2.1.1)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.66.0)
   - FBReactNativeSpec (0.66.0):
@@ -282,8 +282,8 @@ PODS:
   - React-jsinspector (0.66.0)
   - React-logger (0.66.0):
     - glog
-  - react-native-cometchat-rtc (2.0.3-beta1):
-    - CometChatCalls (= 2.0.3)
+  - react-native-cometchat-rtc (2.1.1):
+    - CometChatCalls (= 2.1.1)
     - React
   - react-native-document-picker (4.3.0):
     - React-Core
@@ -298,7 +298,7 @@ PODS:
     - react-native-video/Video (= 5.2.0-alpha1)
   - react-native-video/Video (5.2.0-alpha1):
     - React-Core
-  - react-native-webview (11.6.2):
+  - react-native-webview (11.14.1):
     - React-Core
   - React-perflogger (0.66.0)
   - React-RCTActionSheet (0.66.0):
@@ -381,11 +381,11 @@ PODS:
     - React-Core
   - RNScreens (2.16.1):
     - React-Core
-  - RNSound (0.11.1):
-    - React-Core
-    - RNSound/Core (= 0.11.1)
-  - RNSound/Core (0.11.1):
-    - React-Core
+  - RNSound (0.11.0):
+    - React
+    - RNSound/Core (= 0.11.0)
+  - RNSound/Core (0.11.0):
+    - React
   - RNVectorIcons (7.1.0):
     - React
   - SDWebImage (5.11.1):
@@ -587,7 +587,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
-  CometChatCalls: 29ad359266f1dd0fd040433d3cb389c23518aa7c
+  CometChatCalls: fc68f63e91b117ec5ef5f269dddbeac1ee7bf1a5
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
   FBLazyVector: 6816ca39e1cc8beffd2a96783f518296789d1c48
   FBReactNativeSpec: 3b1e86618e902743fde35b40cf9ebd100fd655b7
@@ -617,13 +617,13 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 6a05173dc0142abc582bd4edd2d23146b8cc218a
   React-jsinspector: be95ad424ba9f7b817aff22732eb9b1b810a000a
   React-logger: 9a9cd87d4ea681ae929b32ef580638ff1b50fb24
-  react-native-cometchat-rtc: 338b6cbf76fe2db7b400b7675dbb435d294d2906
+  react-native-cometchat-rtc: e1aac9a0dbed313662ed8eea1c16e942aea1a623
   react-native-document-picker: df3652604cb92ade18e3e280a562f23b4580f4bf
   react-native-image-picker: 5a7dd93d4f9dd0d910da5dde3707fd96f70d03b3
   react-native-keep-awake: eba3137546b10003361b37c761f6c429b59814ae
   react-native-safe-area-context: 86612d2c9a9e94e288319262d10b5f93f0b395f5
   react-native-video: f12df262635ed322dfc2c29e19fb571dc7b437a7
-  react-native-webview: 1f56115845c98f0a59dfbbac685797c014a821be
+  react-native-webview: 16054e7a26009b7d5944a18e19f450e26bd4c969
   React-perflogger: 1f554c2b684e2f484f9edcdfdaeedab039fbaca8
   React-RCTActionSheet: 610d5a5d71ab4808734782c8bca6a12ec3563672
   React-RCTAnimation: ec6ed97370ace32724c253f29f0586cafcab8126
@@ -643,7 +643,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
   RNScreens: 45c457af3d2ee9e08fc01e70da87e653d46b1198
-  RNSound: 9253013eeaa051eab63d354fd4654f7aa67c82f0
+  RNSound: c980916b596cc15c8dcd2f6ecd3b13c4881dbe20
   RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815
