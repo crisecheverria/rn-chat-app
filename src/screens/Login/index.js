@@ -1,10 +1,11 @@
 import React from 'react';
-import {View, Image} from 'react-native';
+import {View, Image, KeyboardAvoidingView, Platform} from 'react-native';
 import {globalStyles} from '../../global-styles';
 import {Input, Button, Chip} from 'react-native-elements';
 import {useAuth} from '../../context/AuthContext';
 import {CometChat} from '@cometchat-pro/react-native-chat';
 import {COMETCHAT_CONSTANTS} from '../../../constants';
+import DismissKeyboard from '../../components/DismissKeyboard';
 
 export default function Login({navigation}) {
   const [uid, setUsername] = React.useState('');
@@ -29,40 +30,42 @@ export default function Login({navigation}) {
   };
 
   return (
-    <View style={globalStyles.container}>
-      <View style={globalStyles.header}>
-        <Image
-          source={require('../../assets/logo.png')}
-          style={globalStyles.logo}
-          resizeMode="stretch"
-        />
-      </View>
-      <View style={globalStyles.body}>
-        <Input
-          placeholder="username"
-          leftIcon={{type: 'font-awesome', name: 'user'}}
-          onChangeText={value => setUsername(value)}
-        />
+    <DismissKeyboard>
+      <View style={globalStyles.container}>
+        <View style={globalStyles.header}>
+          <Image
+            source={require('../../assets/logo.png')}
+            style={globalStyles.logo}
+            resizeMode="stretch"
+          />
+        </View>
+        <View style={globalStyles.body}>
+          <Input
+            placeholder="username"
+            leftIcon={{type: 'font-awesome', name: 'user'}}
+            onChangeText={value => setUsername(value)}
+          />
 
-        <Button title="Sign In" loading={false} onPress={handleSignIn} />
-        <Button
-          title="Sign Up"
-          type="outline"
-          style={globalStyles.mt10}
-          onPress={() => navigation.navigate('SignUp')}
-        />
+          <Button title="Sign In" loading={false} onPress={handleSignIn} />
+          <Button
+            title="Sign Up"
+            type="outline"
+            style={globalStyles.mt10}
+            onPress={() => navigation.navigate('SignUp')}
+          />
+        </View>
+        {auth?.error !== null ? (
+          <Chip
+            title={auth.error}
+            icon={{
+              name: 'exclamation-circle',
+              type: 'font-awesome',
+              size: 20,
+              color: 'white',
+            }}
+          />
+        ) : null}
       </View>
-      {auth?.error !== null ? (
-        <Chip
-          title={auth.error}
-          icon={{
-            name: 'exclamation-circle',
-            type: 'font-awesome',
-            size: 20,
-            color: 'white',
-          }}
-        />
-      ) : null}
-    </View>
+    </DismissKeyboard>
   );
 }

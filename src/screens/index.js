@@ -6,7 +6,7 @@ import {CometChat} from '@cometchat-pro/react-native-chat';
 import {
   CometChatUI,
   CometChatMessages,
-} from '../../cometchat-pro-react-native-ui-kit/src/index';
+} from '../../cometchat-pro-react-native-ui-kit';
 
 import SignIn from './Login';
 import SignUp from './SignUp';

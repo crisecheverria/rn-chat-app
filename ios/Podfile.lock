@@ -291,7 +291,7 @@ PODS:
     - React-Core
   - react-native-keep-awake (4.0.0):
     - React
-  - react-native-safe-area-context (3.1.9):
+  - react-native-safe-area-context (3.3.2):
     - React-Core
   - react-native-video (5.2.0-alpha1):
     - React-Core
@@ -369,7 +369,7 @@ PODS:
     - React-Core
   - RNCAsyncStorage (1.15.9):
     - React-Core
-  - RNCPicker (1.9.4):
+  - RNCPicker (1.16.8):
     - React-Core
   - RNFastImage (8.5.11):
     - React-Core
@@ -379,13 +379,13 @@ PODS:
     - React-Core
   - RNReanimated (1.13.3):
     - React-Core
-  - RNScreens (2.16.1):
+  - RNScreens (2.18.1):
     - React-Core
-  - RNSound (0.11.0):
-    - React
-    - RNSound/Core (= 0.11.0)
-  - RNSound/Core (0.11.0):
-    - React
+  - RNSound (0.11.1):
+    - React-Core
+    - RNSound/Core (= 0.11.1)
+  - RNSound/Core (0.11.1):
+    - React-Core
   - RNVectorIcons (7.1.0):
     - React
   - SDWebImage (5.11.1):
@@ -621,7 +621,7 @@ SPEC CHECKSUMS:
   react-native-document-picker: df3652604cb92ade18e3e280a562f23b4580f4bf
   react-native-image-picker: 5a7dd93d4f9dd0d910da5dde3707fd96f70d03b3
   react-native-keep-awake: eba3137546b10003361b37c761f6c429b59814ae
-  react-native-safe-area-context: 86612d2c9a9e94e288319262d10b5f93f0b395f5
+  react-native-safe-area-context: 5cf05f49df9d17261e40e518481f2e334c6cd4b5
   react-native-video: f12df262635ed322dfc2c29e19fb571dc7b437a7
   react-native-webview: 16054e7a26009b7d5944a18e19f450e26bd4c969
   React-perflogger: 1f554c2b684e2f484f9edcdfdaeedab039fbaca8
@@ -638,12 +638,12 @@ SPEC CHECKSUMS:
   ReactCommon: eb059748e842a1a86025ebbd4ac9d99e74492f88
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNCAsyncStorage: d599364c12b1ddb042cc2d7ab6f8258962b83097
-  RNCPicker: 2c31098349f499e7ab4da6c1ce26f7537d271062
+  RNCPicker: 0991c56da7815c0cf946d6f63cf920b25296e5f6
   RNFastImage: 1f2cab428712a4baaf78d6169eaec7f622556dd7
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
-  RNScreens: 45c457af3d2ee9e08fc01e70da87e653d46b1198
-  RNSound: c980916b596cc15c8dcd2f6ecd3b13c4881dbe20
+  RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
+  RNSound: 9253013eeaa051eab63d354fd4654f7aa67c82f0
   RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815

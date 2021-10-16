@@ -6,6 +6,7 @@ import {globalStyles} from '../../global-styles';
 import {CometChat} from '@cometchat-pro/react-native-chat';
 import {COMETCHAT_CONSTANTS} from '../../../constants';
 import gravatar from 'gravatar-api';
+import DismissKeyboard from '../../components/DismissKeyboard';
 
 export default function SignUp() {
   const [data, setData] = React.useState({
@@ -55,34 +56,36 @@ export default function SignUp() {
   };
 
   return (
-    <View style={globalStyles.container}>
-      <View style={globalStyles.header}>
-        <Image
-          source={require('../../assets/logo.png')}
-          style={globalStyles.logo}
-          resizeMode="stretch"
-        />
-      </View>
-      <View style={globalStyles.body}>
-        <Input
-          placeholder="username"
-          leftIcon={{type: 'font-awesome', name: 'user'}}
-          onChangeText={value => setData({...data, uid: value})}
-        />
-        <Input
-          placeholder="name"
-          leftIcon={{type: 'font-awesome', name: 'user'}}
-          onChangeText={value => setData({...data, name: value})}
-        />
+    <DismissKeyboard>
+      <View style={globalStyles.container}>
+        <View style={globalStyles.header}>
+          <Image
+            source={require('../../assets/logo.png')}
+            style={globalStyles.logo}
+            resizeMode="stretch"
+          />
+        </View>
+        <View style={globalStyles.body}>
+          <Input
+            placeholder="username"
+            leftIcon={{type: 'font-awesome', name: 'user'}}
+            onChangeText={value => setData({...data, uid: value})}
+          />
+          <Input
+            placeholder="name"
+            leftIcon={{type: 'font-awesome', name: 'user'}}
+            onChangeText={value => setData({...data, name: value})}
+          />
 
-        <Input
-          placeholder="email"
-          leftIcon={{type: 'font-awesome', name: 'envelope'}}
-          onChangeText={value => setData({...data, email: value})}
-        />
+          <Input
+            placeholder="email"
+            leftIcon={{type: 'font-awesome', name: 'envelope'}}
+            onChangeText={value => setData({...data, email: value})}
+          />
 
-        <Button title="Sign Up" loading={false} onPress={handleSignUp} />
+          <Button title="Sign Up" loading={false} onPress={handleSignUp} />
+        </View>
       </View>
-    </View>
+    </DismissKeyboard>
   );
 }
