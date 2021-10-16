@@ -1,13 +1,18 @@
 import React from 'react';
-import {SafeAreaView, StatusBar, StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import Screens from './screens';
+import {AuthContextProvider} from './context/AuthContext';
 
 const App = () => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
-      <View style={styles.body}>
-        <Text>Chat App</Text>
-      </View>
+      <AuthContextProvider>
+        <NavigationContainer>
+          <Screens />
+        </NavigationContainer>
+      </AuthContextProvider>
     </SafeAreaView>
   );
 };
@@ -16,9 +21,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  body: {
-    paddingHorizontal: 10,
   },
 });
 
