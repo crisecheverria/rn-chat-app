@@ -2,8 +2,7 @@
 
 Let's build a React Native Chat App to connect with Users & Groups, make Audio & Video Calls, send Text, Media Messages, and more.
 
-|![calls](./screenshots/calls.png)|![video-calls](./screenshots/video-calls.png)
-|![chats](./screenshots/chats.png)|![share-media](./screenshots/share-media.png)
+|![comet-chat-app](./screenshots/comet-chat-app.png)
 
 To simplify the process and have a production-ready solution in a few minutes, we will use [CometChat React Native UI Kit](https://www.cometchat.com/docs/react-native-chat-ui-kit/overview).
 
@@ -40,4 +39,46 @@ Open your terminal, and using npx, let's create our React Native Chat App.
 
 ```js
 npx react-native init chatApp
+```
+
+Now, open chatApp using your favourite IDE/Text Editor, I will choose Visual Studio Code and also let's create a **src** folder in the root of our app. Move the file App.js from the root into src folder, remember to update the root index.js to reflect the location change of App.js
+
+**./src/App.js**
+
+```js
+import React from 'react';
+import {SafeAreaView, StatusBar, StyleSheet, Text, View} from 'react-native';
+
+const App = () => {
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+      <View style={styles.body}>
+        <Text>Chat App</Text>
+      </View>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  body: {
+    paddingHorizontal: 10,
+  },
+});
+
+export default App;
+```
+
+**./index.js**
+
+```js
+import {AppRegistry} from 'react-native';
+import App from './src/App'; 👈
+import {name as appName} from './app.json';
+
+AppRegistry.registerComponent(appName, () => App);
 ```
