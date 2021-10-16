@@ -68,7 +68,7 @@
     "react-native-vector-icons": "^7.1.0",
     "react-native-video": "^5.2.0-alpha1",
     "react-native-video-controls": "^2.7.1",
-    "react-native-webview": "^11.6.2",
+    "react-native-webview": "^11.14.1",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
     "rn-fetch-blob": "^0.12.0",
     "rn-nodeify": "^10.3.0"
