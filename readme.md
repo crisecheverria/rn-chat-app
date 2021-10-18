@@ -2,7 +2,7 @@
 
 Let's build a React Native Chat App to connect with Users & Groups, make Audio & Video Calls, send Text, Media Messages, and more.
 
-|![comet-chat-app](./screenshots/comet-chat-app.png)
+![comet-chat-app](./screenshots/comet-chat-app.png)
 
 To simplify the process and have a production-ready solution in a few minutes, we will use [CometChat React Native UI Kit](https://www.cometchat.com/docs/react-native-chat-ui-kit/overview).
 
@@ -35,10 +35,10 @@ Click on the recently created app to see more information.
 
 ### Create your React Native App
 
-Open your terminal, and using npx, let's create our React Native Chat App.
+Open your terminal, and using npx, let's create our React Native Chat App. For this post, we will use React Native v0.66 I strongly recommend you use the same version to avoid compatibility issues with the libraries we will use.
 
 ```js
-npx react-native init chatApp
+npx react-native init chatApp --version 0.66.0
 ```
 
 Now, open chatApp using your favourite IDE/Text Editor, I will choose Visual Studio Code and also let's create a **src** folder in the root of our app. Move the file App.js from the root into src folder, remember to update the root index.js to reflect the location change of App.js
