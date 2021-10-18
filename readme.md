@@ -177,7 +177,7 @@ Open a terminal and run the Simulator for iOS:
 npx react-native run-ios
 ```
 
-You should see the iPhone Simulator with the console.warn message we used inside the init() method if everythings goes well.
+You should see the iPhone Simulator with the console.warn message we used inside the init() method if everything goes well.
 
 ![iphone simulator cometchat init](./screenshots/iphone-simulator-cometchat-init.png)
 
@@ -188,3 +188,88 @@ npx react-native run-android
 ```
 
 The result should be the same as the iPhone Simulator.
+
+### Add UI Kit to your project
+
+Next, let's clone CometChat React Native UI Kit repository on our local computer. Open a new terminal window and clone the following repository in another location. In my case, I will clone it in my Desktop folder:
+
+```js
+git clone https://github.com/cometchat-pro/cometchat-pro-react-native-ui-kit.git -b v3
+```
+
+Once you clone the UI Kit repository, let's create a new folder in the root of our app with the name of **cometchat-pro-react-native-ui-kit** and copy and paste all the folders and files we have inside the cloned repository `cometchat-pro-react-native-ui-kit/src` folder into our just created folder.
+
+![CometChat-Pro UI Kit Folder Structure](./screenshots/cometchat-pro-ui-kit-folders.png)
+
+#### CometChat UI Kit Dependencies
+
+To make the UI Kit work, we need to install a list of dependencies. And to make the process more petite prom to issues, I will give the list of dependencies that you will establish with the **same version**; otherwise, you probably will have problems.
+
+```
+"dependencies": {
+    "@cometchat-pro/react-native-calls": "^2.1.1",
+    "@cometchat-pro/react-native-chat": "^3.0.0",
+    "@react-native-async-storage/async-storage": "^1.15.9",
+    "@react-native-picker/picker": "^1.9.4",
+    "@react-navigation/bottom-tabs": "^5.11.2",
+    "@react-navigation/native": "^5.8.10",
+    "@react-navigation/stack": "^5.12.8",
+    "emoji-mart-native": "^0.6.2-beta",
+    "gravatar-api": "^1.5.0",
+    "react": "17.0.2",
+    "react-native": "0.66.0",
+    "react-native-autolink": "^3.0.0",
+    "react-native-document-picker": "^4.1.1",
+    "react-native-elements": "^3.0.0-alpha.1",
+    "react-native-fast-image": "^8.3.4",
+    "react-native-gesture-handler": "^1.9.0",
+    "react-native-image-picker": "^3.1.1",
+    "react-native-keep-awake": "^4.0.0",
+    "react-native-reanimated": "^1.13.3",
+    "react-native-safe-area-context": "^3.1.9",
+    "react-native-screens": "^2.16.1",
+    "react-native-sound": "^0.11.0",
+    "react-native-swipe-list-view": "^3.2.8",
+    "react-native-vector-icons": "^7.1.0",
+    "react-native-video": "^5.2.0-alpha1",
+    "react-native-video-controls": "^2.7.1",
+    "react-native-webview": "^11.14.1",
+    "reanimated-bottom-sheet": "^1.0.0-alpha.22",
+    "rn-fetch-blob": "^0.12.0",
+    "rn-nodeify": "^10.3.0"
+  }
+```
+
+Now, copy the list from above 👆 and replace it with the dependencies list you have in your **package.json** file in the app's root.
+
+Now, let's remove the `node_modules` & the `package-lock.json` file and install all the dependencies one more time.
+
+```
+rm -rf node_modules
+rm package-lock.json
+npm install
+```
+
+Have in mind that some of this libraries needs an extra step in order to finish the installation process for example:
+
+- react-navigation (Android)
+
+For iOS must of the setup is done by using Cocoa Pods. Let's start there and run `npx pod-install`.
+
+And for Android, let's finish the react-navigation setup process, by opeong the file `android/app/src/main/java/com/chatapp/MainActivity.java` and this is mostly because of the react-navigation version we use for this guide wich is v5.X
+
+```js
+...
+import android.os.Bundle;
+
+public class MainActivity extends ReactActivity {
+  ...
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(null);
+  }
+}
+```
+
+Remember that we used specific versions of the libraries, and I recommend you use the identical versions I used. If you still want to try the latest versions, you're free to do it. I hope you won't find too many issues 😉
