@@ -209,15 +209,11 @@ To make the UI Kit work, we need to install a list of dependencies. And to make 
 "dependencies": {
     "@cometchat-pro/react-native-calls": "^2.1.1",
     "@cometchat-pro/react-native-chat": "^3.0.0",
-    "@react-native-async-storage/async-storage": "^1.15.9",
     "@react-native-picker/picker": "^1.9.4",
     "@react-navigation/bottom-tabs": "^5.11.2",
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
     "emoji-mart-native": "^0.6.2-beta",
-    "gravatar-api": "^1.5.0",
-    "react": "17.0.2",
-    "react-native": "0.66.0",
     "react-native-autolink": "^3.0.0",
     "react-native-document-picker": "^4.1.1",
     "react-native-elements": "^3.0.0-alpha.1",
@@ -253,10 +249,11 @@ npm install
 Have in mind that some of this libraries needs an extra step in order to finish the installation process for example:
 
 - react-navigation (Android)
+- react-native-vector-icons (iOS)
 
 For iOS must of the setup is done by using Cocoa Pods. Let's start there and run `npx pod-install`.
 
-And for Android, let's finish the react-navigation setup process, by opeong the file `android/app/src/main/java/com/chatapp/MainActivity.java` and this is mostly because of the react-navigation version we use for this guide wich is v5.X
+And for Android, let's finish the **react-navigation** setup process, by opeong the file `android/app/src/main/java/com/chatapp/MainActivity.java` and this is mostly because of the react-navigation version we use for this guide wich is v5.X
 
 ```js
 ...
@@ -272,4 +269,206 @@ public class MainActivity extends ReactActivity {
 }
 ```
 
+For **react-native-vector-icons** we need to add the list of Fonts into the `Info.plist` file for iOS.
+
+```
+<key>UIAppFonts</key>
+	<array>
+		<string>AntDesign.ttf</string>
+		<string>Entypo.ttf</string>
+		<string>EvilIcons.ttf</string>
+		<string>Feather.ttf</string>
+		<string>FontAwesome.ttf</string>
+		<string>FontAwesome5_Brands.ttf</string>
+		<string>FontAwesome5_Regular.ttf</string>
+		<string>FontAwesome5_Solid.ttf</string>
+		<string>Foundation.ttf</string>
+		<string>Ionicons.ttf</string>
+		<string>MaterialIcons.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
+		<string>SimpleLineIcons.ttf</string>
+		<string>Octicons.ttf</string>
+		<string>Zocial.ttf</string>
+		<string>Fontisto.ttf</string>
+	</array>
+```
+
 Remember that we used specific versions of the libraries, and I recommend you use the identical versions I used. If you still want to try the latest versions, you're free to do it. I hope you won't find too many issues 😉
+
+### Let's add some screens
+
+Create a new folder inside src called `screens,` and inside screens folder, let's create `Login` & `SignUp` folders and inside each folder add an `index.js` file.
+
+Your files & folders should look like this
+
+- `src/screens/Login/index.js`
+- `src/screens/SignUp/index.js`
+
+#### User LogIn
+
+Inside `src/screens/Login/index.js` copy & paste next code:
+
+```js
+import React from 'react';
+import {View} from 'react-native';
+import {Input, Button} from 'react-native-elements';
+import styles from '../../styles';
+
+export default function Login({navigation}) {
+  const [uid, setUsername] = React.useState('');
+
+  const handleSignIn = async () => {};
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.body}>
+        <Input
+          placeholder="username"
+          leftIcon={{type: 'font-awesome', name: 'user'}}
+          onChangeText={value => setUsername(value)}
+        />
+
+        <Button title="Sign In" loading={false} onPress={handleSignIn} />
+        <Button
+          title="Sign Up"
+          type="outline"
+          style={styles.mt10}
+          onPress={() => {}}
+        />
+      </View>
+    </View>
+  );
+}
+```
+
+#### Styling
+
+Let's add some styles for our screens; for that, create a `styles` folder and add an `index.js` file.
+
+**./src/styles/index.js**
+
+```js
+import {StyleSheet} from 'react-native';
+
+export const globalStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  header: {
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  body: {
+    flex: 3,
+    paddingHorizontal: 20,
+    paddingVertical: 30,
+  },
+  title: {
+    color: '#000',
+    fontWeight: 'bold',
+    fontSize: 30,
+  },
+  mt10: {
+    marginTop: 10,
+  },
+});
+```
+
+#### User SignUp
+
+Inside `src/screens/SignUp/index.js` copy & paste next code:
+
+```js
+import React from 'react';
+import {View} from 'react-native';
+import {Input, Button} from 'react-native-elements';
+import {styles} from '../../styles';
+
+export default function SignUp() {
+  const [data, setData] = React.useState({
+    name: '',
+    uid: '',
+    email: '',
+  });
+
+  const handleSignUp = async () => {};
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.body}>
+        <Input
+          placeholder="username"
+          leftIcon={{type: 'font-awesome', name: 'user'}}
+          onChangeText={value => setData({...data, uid: value})}
+        />
+        <Input
+          placeholder="name"
+          leftIcon={{type: 'font-awesome', name: 'user'}}
+          onChangeText={value => setData({...data, name: value})}
+        />
+
+        <Input
+          placeholder="email"
+          leftIcon={{type: 'font-awesome', name: 'envelope'}}
+          onChangeText={value => setData({...data, email: value})}
+        />
+
+        <Button title="Sign Up" loading={false} onPress={handleSignUp} />
+      </View>
+    </View>
+  );
+}
+```
+
+### Configure Navigation
+
+We have already installed react-navigation. Let's create Stack navigation to navigate between our two new screens.
+
+Create an `index.js` file inside `screens` folder.
+
+```js
+import React from 'react';
+import {createStackNavigator} from '@react-navigation/stack';
+
+import SignIn from './Login';
+import SignUp from './SignUp';
+
+const Stack = createStackNavigator();
+
+const AuthScreens = () => (
+  <Stack.Navigator>
+    <Stack.Screen name="SignIn" component={SignIn} />
+    <Stack.Screen name="SignUp" component={SignUp} />
+  </Stack.Navigator>
+);
+
+const Screens = () => {
+  return <AuthScreens />;
+};
+
+export default Screens;
+```
+
+Open our `App.js` file and update the content adding a `NavigationContainer` and importing our `screens/index.js` file to render our screens.
+
+```js
+import React from 'react';
+import {SafeAreaView, StatusBar} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import Screens from './screens';
+import {styles} from './styles';
+
+const App = () => {
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+      <NavigationContainer>
+        <Screens />
+      </NavigationContainer>
+    </SafeAreaView>
+  );
+};
+
+export default App;
+```
