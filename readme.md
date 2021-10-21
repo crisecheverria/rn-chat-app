@@ -886,3 +886,9 @@ export default Screens;
 ```
 
 We added a couple of more screens and an extra Stack.Navigator named **CometChatUIScreens** will be the screens we will show to the logged-in users. See how using AuthContextProvider we can check if the user is logged in or not to show either `<CometChatUIScreens />` or `<AuthScreens />.`
+
+Once you finish, run the app in the Simulator and log in with a user, you can use already existing users like superhero1, superhero2, superhero3.
+
+If everything it's ok, you should see `<CometChatUIScreens />` like in the image below.
+
+![CometChat UI Screens](./screenshots/cometchatuiscreens.png)
