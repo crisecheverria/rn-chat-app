@@ -312,12 +312,23 @@ Inside `src/screens/Login/index.js` copy & paste next code:
 import React from 'react';
 import {View} from 'react-native';
 import {Input, Button} from 'react-native-elements';
-import styles from '../../styles';
+import {styles} from '../../styles';
+
+import {CometChat} from '@cometchat-pro/react-native-chat';
+import {COMETCHAT_CONSTANTS} from '../../../constants';
 
 export default function Login({navigation}) {
   const [uid, setUsername] = React.useState('');
 
-  const handleSignIn = async () => {};
+  const handleSignIn = async () =>
+    CometChat.login(uid, COMETCHAT_CONSTANTS.AUTH_KEY).then(
+      user => {
+        console.log('User is logged in: ', user);
+      },
+      error => {
+        console.log('error on login: ', error);
+      },
+    );
 
   return (
     <View style={styles.container}>
@@ -333,13 +344,17 @@ export default function Login({navigation}) {
           title="Sign Up"
           type="outline"
           style={styles.mt10}
-          onPress={() => {}}
+          onPress={() => navigation.navigate('SignUp')}
         />
       </View>
     </View>
   );
 }
 ```
+
+As you can see, we have created a Login screen with a `username` Input component from react-native-elements. Maybe the most important is that we also imported the `CometChat` class, and we're using the login() method to log in to our app using a username.
+
+We already imported the navigation prop to navigate to the SignUp screen, but for that to work, we need to use the NavigationContainer from react-navigation. Keep reading because we will do that in a bit.
 
 #### Styling
 
@@ -385,6 +400,10 @@ import {View} from 'react-native';
 import {Input, Button} from 'react-native-elements';
 import {styles} from '../../styles';
 
+import {CometChat} from '@cometchat-pro/react-native-chat';
+import {COMETCHAT_CONSTANTS} from '../../../constants';
+import gravatar from 'gravatar-api';
+
 export default function SignUp() {
   const [data, setData] = React.useState({
     name: '',
@@ -392,7 +411,37 @@ export default function SignUp() {
     email: '',
   });
 
-  const handleSignUp = async () => {};
+  const handleSignUp = async () => {
+    if (data.name !== '' && data.uid !== '') {
+      let user = new CometChat.User(data.uid);
+      user.setName(data.name);
+      user.avatar = gravatar.imageUrl({
+        email: data.email,
+        parameters: {size: '500'},
+        secure: true,
+      });
+
+      try {
+        const newUser = await CometChat.createUser(
+          user,
+          COMETCHAT_CONSTANTS.AUTH_KEY,
+        );
+        console.log('User created: ', newUser);
+      } catch (error) {
+        console.log('error on createUser: ', error);
+      }
+
+      try {
+        const loggedUserInfo = await CometChat.login(
+          data.uid,
+          COMETCHAT_CONSTANTS.AUTH_KEY,
+        );
+        console.log('User is logged in: ', loggedUserInfo);
+      } catch (error) {
+        console.log('error on login: ', error);
+      }
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -420,6 +469,14 @@ export default function SignUp() {
   );
 }
 ```
+
+Same as the Login screen, here we import CometChat class to use the `User()` method to add the user **UID**, **Name**, and **Avatar** image. We use the `gravatar-api` package for the avatar image URL, which will create a Gravatar based on the user email. We need to install it, so run the following command:
+
+```
+npm i gravatar-api
+```
+
+Once we create a new User object, we can use the method `createUser()` to create the user inside CometChat dashboard. We use try-catch to catch any error we might face. After that, we use the method `login()` to log in the recently created user into CometChat.
 
 ### Configure Navigation
 
@@ -472,3 +529,25 @@ const App = () => {
 
 export default App;
 ```
+
+Let's run what we have now using the Simulator, for iOS use `npx react-native run-ios` & for Android `npx react-native run-android`
+
+**Sign In**
+
+![LogIn screen](./screenshots/login-screen.png)
+
+**Sign Up**
+
+![LogIn screen](./screenshots/signup-screen.png)
+
+### Adding a Demo user
+
+Let's try to SignUp a Demo user, so navigate the SignUp screen and fillup the form. In my case, I added the following user information:
+
+- username: Demo
+- name: Demo
+- email: my personal email which already have a Gravatar image.
+
+After testing the SingUp screen, you can see the new user information if you Login into [cometchat.com](https://www.cometchat.com/) account and open the Users section of the Dashboard.
+
+![CometChat users dashboard](./screenshots/user-registration-dashboard.png)
