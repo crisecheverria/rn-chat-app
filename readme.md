@@ -411,7 +411,7 @@ export default function SignUp() {
     email: '',
   });
 
-  const handleSignUp = async () => {
+  const handleSignUp = () => {
     if (data.name !== '' && data.uid !== '') {
       let user = new CometChat.User(data.uid);
       user.setName(data.name);
@@ -421,25 +421,23 @@ export default function SignUp() {
         secure: true,
       });
 
-      try {
-        const newUser = await CometChat.createUser(
-          user,
-          COMETCHAT_CONSTANTS.AUTH_KEY,
-        );
-        console.log('User created: ', newUser);
-      } catch (error) {
-        console.log('error on createUser: ', error);
-      }
+      CometChat.createUser(user, COMETCHAT_CONSTANTS.AUTH_KEY).then(
+        newUser => {
+          console.warn('User created: ', newUser);
+        },
+        error => {
+          console.warn('error on createUser: ', error);
+        },
+      );
 
-      try {
-        const loggedUserInfo = await CometChat.login(
-          data.uid,
-          COMETCHAT_CONSTANTS.AUTH_KEY,
-        );
-        console.log('User is logged in: ', loggedUserInfo);
-      } catch (error) {
-        console.log('error on login: ', error);
-      }
+      CometChat.login(data.uid, COMETCHAT_CONSTANTS.AUTH_KEY).then(
+        loggedUserInfo => {
+          console.warn('User is logged in: ', loggedUserInfo);
+        },
+        error => {
+          console.warn('error on login: ', error);
+        },
+      );
     }
   };
 
@@ -540,7 +538,7 @@ Let's run what we have now using the Simulator, for iOS use `npx react-native ru
 
 ![LogIn screen](./screenshots/signup-screen.png)
 
-### Adding a Demo user
+#### Adding a Demo user
 
 Let's try to SignUp a Demo user, so navigate the SignUp screen and fillup the form. In my case, I added the following user information:
 
@@ -548,6 +546,343 @@ Let's try to SignUp a Demo user, so navigate the SignUp screen and fillup the fo
 - name: Demo
 - email: my personal email which already have a Gravatar image.
 
-After testing the SingUp screen, you can see the new user information if you Login into [cometchat.com](https://www.cometchat.com/) account and open the Users section of the Dashboard.
+After testing the SingUp screen, you can see the new user information if you Login into [cometchat.com](https://www.cometchat.com/) account and open the Users section of the Dashboard. When you create an App, it also comes with a couple of Super Heros users that you can use for testing.
 
 ![CometChat users dashboard](./screenshots/user-registration-dashboard.png)
+
+### User Authentication Flow
+
+We need to test the LogIn process because we already tried the SignUp process, not just the Login. Also, we need to keep the user logged-in in our app and navigate into the other CometChatUI functionalities we have when using the React Native UI Kit.
+
+To make that, we will use **React Context API** and create an **AuthContext Provider**. Inside the `src` folder, let's create a `context` folder and inside add a new file named `AuthContext.js`
+
+**./src/context/AuthContext.js**
+
+```js
+import React from 'react';
+
+const initialState = {
+  user: {},
+  isLoggedIn: false,
+  error: null,
+  loading: false,
+};
+
+const AuthContext = React.createContext();
+
+const reducer = (prevState, action) => {
+  switch (action.type) {
+    case 'LOGIN':
+      console.log('LOGIN: ', action.user);
+      return {
+        ...prevState,
+        user: action.user,
+        isLoggedIn: action.isLoggedIn,
+      };
+
+    case 'REGISTER':
+      return {
+        ...prevState,
+        user: action.user,
+      };
+
+    case 'LOGOUT':
+      return {
+        ...prevState,
+        user: {},
+        isLoggedIn: false,
+        error: null,
+        loading: false,
+      };
+
+    case 'RETRIEVE_USER':
+      return {
+        ...prevState,
+        user: action.user,
+        isLoggedIn: action.isLoggedIn,
+        error: null,
+        loading: false,
+      };
+
+    case 'AUTH_FAILED':
+      return {
+        ...prevState,
+        error: action.error,
+        isLoggedIn: action.isLoggedIn,
+      };
+  }
+};
+
+export const AuthContextProvider = ({children}) => {
+  const [auth, dispatchAuth] = React.useReducer(reducer, initialState);
+
+  return (
+    <AuthContext.Provider value={{auth, dispatchAuth}}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => React.useContext(AuthContext);
+```
+
+We created an Authentication Provider similar to a Redux Store where we have a reducer function, an initialState and actions that will modify the state. It is identical to the use of React-Redux, but instead of spending too much time following Redux's implementation, we will go this way.
+
+Now, let's import the AuthContext Provider and use it inside our `App.js` file:
+
+```js
+import React from 'react';
+import {SafeAreaView, StatusBar} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import Screens from './screens';
+import {styles} from './styles';
+
+import {AuthContextProvider} from './context/AuthContext'; // 👈
+
+const App = () => {
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+      <AuthContextProvider>
+        <NavigationContainer>
+          <Screens />
+        </NavigationContainer>
+      </AuthContextProvider>
+    </SafeAreaView>
+  );
+};
+
+export default App;
+```
+
+Now we can consume the **AuthContextProvider** inside our app. Let's dispatch some actions when the user SignUp and when the user LogIn into our app.
+
+**./src/screens/SignUp/index.js**
+
+```js
+import React from 'react';
+import {View} from 'react-native';
+import {Input, Button} from 'react-native-elements';
+import {styles} from '../../styles';
+
+import {CometChat} from '@cometchat-pro/react-native-chat';
+import {COMETCHAT_CONSTANTS} from '../../../constants';
+import gravatar from 'gravatar-api';
+import {useAuth} from '../../context/AuthContext'; // 👈
+
+export default function SignUp() {
+  const [data, setData] = React.useState({
+    name: '',
+    uid: '',
+    email: '',
+  });
+
+  const {dispatchAuth} = useAuth(); // 👈
+
+  const handleSignUp = () => {
+    if (data.name !== '' && data.uid !== '') {
+      let user = new CometChat.User(data.uid);
+      user.setName(data.name);
+      user.avatar = gravatar.imageUrl({
+        email: data.email,
+        parameters: {size: '500'},
+        secure: true,
+      });
+
+      CometChat.createUser(user, COMETCHAT_CONSTANTS.AUTH_KEY).then(
+        newUser => {
+          console.warn('User created: ', newUser);
+          dispatchAuth({type: 'REGISTER', user: {...newUser}}); // 👈
+        },
+        error => {
+          console.warn('error on createUser: ', error);
+        },
+      );
+
+      CometChat.login(data.uid, COMETCHAT_CONSTANTS.AUTH_KEY).then(
+        loggedUserInfo => {
+          console.warn('User is logged in: ', loggedUserInfo);
+          // 👇
+          dispatchAuth({
+            type: 'LOGIN',
+            user: {...loggedUserInfo},
+            isLoggedIn: true,
+          });
+        },
+        error => {
+          console.warn('error on login: ', error);
+        },
+      );
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.body}>
+        <Input
+          placeholder="username"
+          leftIcon={{type: 'font-awesome', name: 'user'}}
+          onChangeText={value => setData({...data, uid: value})}
+        />
+        <Input
+          placeholder="name"
+          leftIcon={{type: 'font-awesome', name: 'user'}}
+          onChangeText={value => setData({...data, name: value})}
+        />
+
+        <Input
+          placeholder="email"
+          leftIcon={{type: 'font-awesome', name: 'envelope'}}
+          onChangeText={value => setData({...data, email: value})}
+        />
+
+        <Button title="Sign Up" loading={false} onPress={handleSignUp} />
+      </View>
+    </View>
+  );
+}
+```
+
+**./src/screens/Login/index.js**
+
+```js
+import React from 'react';
+import {View} from 'react-native';
+import {Input, Button, Chip} from 'react-native-elements';
+import {styles} from '../../styles';
+
+import {CometChat} from '@cometchat-pro/react-native-chat';
+import {COMETCHAT_CONSTANTS} from '../../../constants';
+import {useAuth} from '../../context/AuthContext';
+
+export default function Login({navigation}) {
+  const [uid, setUsername] = React.useState('');
+
+  const {auth, dispatchAuth} = useAuth();
+
+  const handleSignIn = async () =>
+    CometChat.login(uid, COMETCHAT_CONSTANTS.AUTH_KEY).then(
+      user => {
+        console.warn('User is logged in: ', user);
+        dispatchAuth({type: 'LOGIN', user: {...user}, isLoggedIn: true});
+      },
+      error => {
+        console.warn('error on login: ', error);
+        dispatchAuth({
+          type: 'AUTH_FAILED',
+          error: error.message,
+          isLoggedIn: false,
+        });
+      },
+    );
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.body}>
+        <Input
+          placeholder="username"
+          leftIcon={{type: 'font-awesome', name: 'user'}}
+          onChangeText={value => setUsername(value)}
+        />
+
+        <Button title="Sign In" loading={false} onPress={handleSignIn} />
+        <Button
+          title="Sign Up"
+          type="outline"
+          style={styles.mt10}
+          onPress={() => navigation.navigate('SignUp')}
+        />
+      </View>
+      {auth?.error !== null ? (
+        <Chip
+          title={auth.error}
+          icon={{
+            name: 'exclamation-circle',
+            type: 'font-awesome',
+            size: 20,
+            color: 'white',
+          }}
+        />
+      ) : null}
+    </View>
+  );
+}
+```
+
+### Add CometChatUI & CometChatMessages screens
+
+Now that we have the basic authentication process, let's add a new screen from the CometChat React Native UI Kit to test the complete app with Login and show the CometChatUIScreen.
+
+**./src/screens/index.js**
+
+```js
+import React from 'react';
+import {View} from 'react-native';
+import {createStackNavigator} from '@react-navigation/stack';
+
+import SignIn from './Login';
+import SignUp from './SignUp';
+
+import {
+  CometChatUI,
+  CometChatMessages,
+} from '../../cometchat-pro-react-native-ui-kit';
+import {styles} from '../styles';
+import {useAuth} from '../context/AuthContext';
+import {CometChat} from '@cometchat-pro/react-native-chat';
+
+const Stack = createStackNavigator();
+
+const AuthScreens = () => (
+  <Stack.Navigator>
+    <Stack.Screen name="SignIn" component={SignIn} />
+    <Stack.Screen name="SignUp" component={SignUp} />
+  </Stack.Navigator>
+);
+
+const CometChatUIView = () => (
+  <View style={styles.container}>
+    <CometChatUI />
+  </View>
+);
+
+const CometChatUIScreens = () => (
+  <Stack.Navigator
+    screenOptions={{
+      headerShown: false,
+    }}>
+    <Stack.Screen name="CometChatUIView" component={CometChatUIView} />
+    <Stack.Screen name="CometChatMessages" component={CometChatMessages} />
+  </Stack.Navigator>
+);
+
+const Screens = () => {
+  const {auth, dispatchAuth} = useAuth();
+
+  React.useEffect(() => {
+    const retrieveUser = async () => {
+      try {
+        const user = await CometChat.getLoggedinUser();
+
+        if (user) {
+          dispatchAuth({
+            type: 'RETRIEVE_USER',
+            user: {...user},
+            isLoggedIn: true,
+          });
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    retrieveUser();
+  }, [dispatchAuth]);
+
+  return auth?.isLoggedIn === true ? <CometChatUIScreens /> : <AuthScreens />;
+};
+
+export default Screens;
+```
+
+We added a couple of more screens and an extra Stack.Navigator named **CometChatUIScreens** will be the screens we will show to the logged-in users. See how using AuthContextProvider we can check if the user is logged in or not to show either `<CometChatUIScreens />` or `<AuthScreens />.`
