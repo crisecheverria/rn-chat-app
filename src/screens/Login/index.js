@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Image, KeyboardAvoidingView, Platform} from 'react-native';
+import {View, Image} from 'react-native';
 import {globalStyles} from '../../global-styles';
 import {Input, Button, Chip} from 'react-native-elements';
 import {useAuth} from '../../context/AuthContext';
